@@ -3,6 +3,9 @@ const mysql = require('mysql');
 const options = require('./options');
 const app = express();
 const cors = require('cors');
+
+const {encrypt, decrypt} = require("./encryption_handler");
+
 const PORT = 3001;
 
 app.use(cors());
@@ -22,8 +25,10 @@ const db = mysql.createConnection(dbLogin)
 
 app.post("/addpassword", (req, res) => {
     const {password, title} = req.body;
-    db.query("INSERT INTO passwords (password, title) VALUES (?, ?)",
-    [password, title],
+    const encryption = encrypt(password);
+
+    db.query("INSERT INTO passwords (password, title, iv) VALUES (?, ?, ?)",
+    [encryption.password, title, encryption.iv],
      (err, result) => {
          if (err) {
              console.log(err);
