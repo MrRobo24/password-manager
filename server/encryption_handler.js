@@ -20,7 +20,10 @@ const encrypt = (password) => {
 }
 
 const decrypt = (encryption) => {
-    const decipher = crypto.createDecipheriv("aes-256-ctr", Buffer.from(secre.encryption_key), Buffer.from(encryption.iv, "hex"));
+    const decipher = crypto.createDecipheriv("aes-256-ctr", 
+    Buffer.from(secret.encryption_key),
+    Buffer.from(encryption.iv, "hex")
+    );
     const decryptedPassword = Buffer.concat([
         decipher.update(Buffer.from(encryption.password, "hex")),
         decipher.final()

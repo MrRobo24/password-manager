@@ -1,11 +1,19 @@
 import './App.css';
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Axios from 'axios';
 
 function App() {
 
   const [password, setPassword] = useState('');
   const [title, setTitle] = useState('');
+  const [passwordList, setPasswordList] = useState([]);
+
+  useEffect( () => {
+    Axios.get("http://localhost:3001/showpasswords").then( (response) => {
+      setPasswordList(response.data);
+    });
+  }, []);
+
 
   const addPassword = () => {
     Axios.post("http://localhost:3001/addpassword",
@@ -15,10 +23,25 @@ function App() {
     });
   };
 
+  const decryptPassword = (encryption) => {
+    Axios.post("http://localhost:3001/decryptpassword", 
+    {
+      password: encryption.password,
+      iv: encryption.iv
+    }).then( (response) => {
+      setPasswordList(passwordList.map( (val) => {
+        return (val.id === encryption.id ? 
+          {id: val.id, password: val.password, title: response.data}
+          : val);
+      }))
+    });
+
+  };
+
   return (
     <div className="App">
       <div className="AddingPassword">
-        <input type="text" placeholder="sample_password123"
+        <input type="password" placeholder="sample_password123"
         onChange={ (event) => {
           setPassword(event.target.value);
         }}/>
@@ -28,6 +51,29 @@ function App() {
         }}/>
         <button onClick={addPassword}>Add Password</button>
       </div>
+
+      <div className="Passwords">
+        {passwordList.map( (val, key) => {
+          return(
+          <div className="password" onClick={
+            () => {decryptPassword(
+              {
+                password: val.password,
+                iv: val.iv,
+                id: val.id
+              });
+            }}
+
+            key={key}
+            >
+            <h3>
+              {val.title}
+              </h3> 
+          </div>
+          ); 
+        })}
+      </div>
+
     </div>
   );
 }
