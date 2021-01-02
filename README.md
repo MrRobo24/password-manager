@@ -1,5 +1,5 @@
 # password-manager
-An ectremely basic project for learning MySql, Express, React and Node. This project has been made with the help of this [youtube tutorial](https://www.youtube.com/watch?v=q9V7kLXvP3E) by PedroTech. 
+An extremely basic project for learning MySql, Express, React and Node. This project has been made with the help of this [YouTube tutorial](https://www.youtube.com/watch?v=q9V7kLXvP3E) by PedroTech. 
 
 1. The password manager uses aes-256-ctr encryption, which I stubmbled upon while making this project itself.
 2. Axios has been used for POST requests from client side.
