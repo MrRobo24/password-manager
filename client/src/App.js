@@ -8,8 +8,8 @@ function App() {
   const [title, setTitle] = useState('');
   const [passwordList, setPasswordList] = useState([]);
 
-  useEffect( () => {
-    Axios.get("http://localhost:3001/showpasswords").then( (response) => {
+  useEffect(() => {
+    Axios.get("http://localhost:3001/showpasswords").then((response) => {
       setPasswordList(response.data);
     });
   }, []);
@@ -17,24 +17,28 @@ function App() {
 
   const addPassword = () => {
     Axios.post("http://localhost:3001/addpassword",
-    {
-      password: password,
-      title: title
-    });
+      {
+        password: password,
+        title: title
+      }).then(
+        window.location.reload()
+      );
+
+
   };
 
   const decryptPassword = (encryption) => {
-    Axios.post("http://localhost:3001/decryptpassword", 
-    {
-      password: encryption.password,
-      iv: encryption.iv
-    }).then( (response) => {
-      setPasswordList(passwordList.map( (val) => {
-        return (val.id === encryption.id ? 
-          {id: val.id, password: val.password, title: response.data}
-          : val);
-      }))
-    });
+    Axios.post("http://localhost:3001/decryptpassword",
+      {
+        password: encryption.password,
+        iv: encryption.iv
+      }).then((response) => {
+        setPasswordList(passwordList.map((val) => {
+          return (val.id === encryption.id ?
+            { id: val.id, password: response.data, title: val.title }
+            : val);
+        }))
+      });
 
   };
 
@@ -42,36 +46,43 @@ function App() {
     <div className="App">
       <div className="AddingPassword">
         <input type="password" placeholder="sample_password123"
-        onChange={ (event) => {
-          setPassword(event.target.value);
-        }}/>
+          onChange={(event) => {
+            setPassword(event.target.value);
+          }} />
         <input type="text" placeholder="Ex. Facebook"
-        onChange={ (event) => {
-          setTitle(event.target.value);
-        }}/>
+          onChange={(event) => {
+            setTitle(event.target.value);
+          }} />
         <button onClick={addPassword}>Add Password</button>
       </div>
 
       <div className="Passwords">
-        {passwordList.map( (val, key) => {
-          return(
-          <div className="password" onClick={
-            () => {decryptPassword(
-              {
-                password: val.password,
-                iv: val.iv,
-                id: val.id
-              });
-            }}
+        <table className="passwordTable">
+          <tbody>
+          {passwordList.map((val, key) => {
+            return (
 
-            key={key}
-            >
-            <h3>
-              {val.title}
-              </h3> 
-          </div>
-          ); 
-        })}
+              <tr key={key}>
+                <td id="title" onClick={
+                  () => {
+                    decryptPassword({
+                      password: val.password,
+                      iv: val.iv,
+                      id: val.id
+                    });
+                  }}
+                >
+                  {val.title}
+                </td>
+                <td id="passVal">
+                  {val.password}
+                </td>
+              </tr>
+
+            );
+          })}
+          </tbody>
+        </table>
       </div>
 
     </div>
