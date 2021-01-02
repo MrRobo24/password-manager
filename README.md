@@ -8,7 +8,7 @@ An ectremely basic project for learning MySql, Express, React and Node. This pro
 
 ## Screenshot
 
-<img src="Screenshot.png" width=480 height=270></td>
+<img src="Screenshot.png" width=600 height=320></td>
 
 
 ## Server-side Dependencies
