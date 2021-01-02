@@ -7,7 +7,7 @@ A toy project for learning MySql, Express, React and Node. This project has been
 4. Crypto is used for encryption.
 
 
-##Server-side Dependencies
+## Server-side Dependencies
 ```json
 {
   "dependencies": {
@@ -19,7 +19,7 @@ A toy project for learning MySql, Express, React and Node. This project has been
 }
 ```
 
-##Client-side Dependencies
+## Client-side Dependencies
 ```json
 {
   "dependencies": {
@@ -32,7 +32,7 @@ A toy project for learning MySql, Express, React and Node. This project has been
 }
 ```
 
-##Secret Configuration
+## Secret Configuration
 I have kept all the private configuration files for Database and Encryption in config.json (gitignored) at [password-manager/server/](/server/) as follows:
 ```json
 {
